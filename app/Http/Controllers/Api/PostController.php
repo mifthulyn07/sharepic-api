@@ -41,17 +41,14 @@ class PostController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        // try {
-        //     $response = $this->service->show($id);
-        //     return $this->successResp('Berhasil mendapatkan data!', new UserResource($response));
-        // } catch (ValidationException $th) {
-        //     return $this->errorResp($th->errors());
-        // }
+        try {
+            $response = $this->service->show($id);
+            return $this->successResp('Successfully retrieved data!', new PostResource($response));
+        } catch (ValidationException $th) {
+            return $this->errorResp($th->errors());
+        }
     }
 
     public function update(UpdatePostRequest $request, $id)
@@ -64,16 +61,13 @@ class PostController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        // try {
-        //     $response = $this->service->destroy($id);
-        //     return $this->successResp('Berhasil menghapus user!', $response);
-        // } catch (ValidationException $th) {
-        //     return $this->errorResp($th->errors());
-        // }
+        try {
+            $response = $this->service->destroy($id);
+            return $this->successResp('Successfully deleted post!', $response);
+        } catch (ValidationException $th) {
+            return $this->errorResp($th->errors());
+        }
     }
 }

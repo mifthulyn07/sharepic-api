@@ -42,11 +42,11 @@ class PostService
     }
 
     public function show($id){
-        // $show = User::where('id', $id)->first();
-        // if ( !$show ) throw ValidationException::withMessages([
-        //     'data' => ['Data tidak ditemukan.'],
-        // ]); 
-        // return $show;
+        $show = Post::where('id', $id)->first();
+        if ( !$show ) throw ValidationException::withMessages([
+            'data' => ['Data not found.'],
+        ]); 
+        return $show;
     }
 
     public function store($request)
@@ -116,12 +116,12 @@ class PostService
 
     public function destroy($id)
     {
-        // $destroy = User::where('id', $id)->first();
-        // if ( !$destroy ) throw ValidationException::withMessages([
-        //     'data' => ['Data tidak ditemukan!'],
-        // ]); 
-        // $destroy->destroy($id);
-        // return $destroy;
+        $destroy = Post::where('id', $id)->first();
+        if ( !$destroy ) throw ValidationException::withMessages([
+            'data' => ['Data not found!'],
+        ]); 
+        $destroy->destroy($id);
+        return $destroy;
     }   
 }   
 ?>

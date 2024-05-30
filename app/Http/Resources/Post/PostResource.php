@@ -16,6 +16,7 @@ class PostResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id'    => $this->id,
             'user_id' => $this->user_id,
             'user' => $this->user,
             'following' => $this->user->following,
