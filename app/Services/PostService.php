@@ -73,12 +73,41 @@ class PostService
 
     public function update($request, $id)
     {  
-        // $update = User::where('id', $id)->first();
-        // if ( !$update ) throw ValidationException::withMessages([
-        //     'data' => ['Data tidak ditemukan!'],
-        // ]); 
-        // $update->update($request);
-        // return $update;
+        $post = Post::where('id', $id)->first();
+
+        if (!$post) throw ValidationException::withMessages([
+            'data' => ['Data not found!'],
+        ]); 
+
+        if(isset($request['image'])){
+            $files = $request['image']; 
+
+            if ($post->images != null) {
+                foreach ($post->images as $image) {
+                    // hapus storage 
+                    Storage::disk('public')->delete('posts/' . $image->image);
+                    
+                    // hapus row image 
+                    $image = Image::findOrFail($image->id);
+                    $image->delete();
+                }
+            }
+
+            foreach ($files as $key => $file) {  
+                $extension = $file->getClientOriginalExtension();
+                $imageName = 'image'.$key.'-'.time().'-'.str_replace(' ', '', Auth::user()->name).'.'.$extension;
+                $path = $file->storeAs('public/posts', $imageName);
+
+                $store_file = new Image;
+                $store_file->post_id = $post->id;
+                $store_file->image = $imageName;
+                $store_file->path = $path;
+                $store_file->save();
+            }
+        }
+
+        $post->update($request);
+        return $post;
     }
 
     public function destroy($id)

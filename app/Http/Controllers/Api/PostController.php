@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Services\PostService;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Post\PostResource;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\API\Post\CreatePostRequest;
+use App\Http\Requests\API\Post\UpdatePostRequest;
 
 
 class PostController extends Controller
@@ -55,25 +55,14 @@ class PostController extends Controller
         // }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(UpdatePostRequest $request, $id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        // try {
-        //     $response = $this->service->update($request->all(), $id);
-        //     return $this->successResp('Berhasil update user!', new UserResource($response));
-        // } catch (ValidationException $th) {
-        //     return $this->errorResp($th->errors());
-        // }
+        try {
+            $response = $this->service->update($request->validated(), $id);
+            return $this->successResp('Succesfully updated post!', new PostResource($response));
+        } catch (ValidationException $th) {
+            return $this->errorResp($th->errors());
+        }
     }
 
     /**
