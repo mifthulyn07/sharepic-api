@@ -1,0 +1,94 @@
+<?php 
+namespace App\Services;
+
+use App\Models\Post;
+use App\Models\User;
+use App\Models\Image;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
+
+class PostService
+{
+    public function index($request)
+    {
+        // $query = User::query();
+
+        // if($search = $request->input('search')){
+        //     $query->whereDate('mulai_kerja', 'like', $search.'%')
+        //         ->orWhere('id', 'like', $search.'%')
+        //         ->orWhere('nama', 'like', $search.'%')
+        //         ->orWhere('email', 'like',$search.'%')
+        //         ->orWhere('jns_kelamin', 'like', $search.'%')
+        //         ->orWhere('no_telp', 'like', $search.'%')
+        //         ->orWhere('alamat', 'like', $search.'%');
+        // }
+
+        // if($request->has('order') && $request->order && $request->has('sort') && $request->sort){
+        //     $query->orderBy($request->order, $request->sort);
+        // }
+
+        // if ($request->has('limit')) {
+        //         $list = $query->paginate( $request['limit'] );
+        //     } else {
+        //         $list = $query->paginate(10);
+        // }
+
+        // return $list;
+    }
+
+    public function show($id){
+        // $show = User::where('id', $id)->first();
+        // if ( !$show ) throw ValidationException::withMessages([
+        //     'data' => ['Data tidak ditemukan.'],
+        // ]); 
+        // return $show;
+    }
+
+    public function store($request)
+    {
+        $me = User::findOrFail(Auth::User()->id);
+        
+        $request['user_id'] = $me->id;
+        $store = Post::create($request);
+
+        if(isset($request['image'])){
+            $files = $request['image']; 
+
+            foreach ($files as $key => $file) {  
+                $extension = $file->getClientOriginalExtension();
+                $imageName = 'image'.$key.'-'.time().'-'.str_replace(' ', '', Auth::user()->name).'.'.$extension;
+                $path = $file->storeAs('public/posts', $imageName);
+
+                $store_file = new Image;
+                $store_file->post_id = $store->id;
+                $store_file->image = $imageName;
+                $store_file->path = $path;
+                $store_file->save();
+            }
+        }
+
+        return $store;
+    }   
+
+    public function update($request, $id)
+    {  
+        // $update = User::where('id', $id)->first();
+        // if ( !$update ) throw ValidationException::withMessages([
+        //     'data' => ['Data tidak ditemukan!'],
+        // ]); 
+        // $update->update($request);
+        // return $update;
+    }
+
+    public function destroy($id)
+    {
+        // $destroy = User::where('id', $id)->first();
+        // if ( !$destroy ) throw ValidationException::withMessages([
+        //     'data' => ['Data tidak ditemukan!'],
+        // ]); 
+        // $destroy->destroy($id);
+        // return $destroy;
+    }   
+}   
+?>

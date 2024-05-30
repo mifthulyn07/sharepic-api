@@ -2,33 +2,44 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Services\PostService;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\Post\PostResource;
+use Illuminate\Validation\ValidationException;
+use App\Http\Requests\API\Post\CreatePostRequest;
+
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $service;
+
+    public function __construct(PostService $service)
+    {
+        $this->service = $service;
+    }
+
     public function index()
     {
-        //
+        // try {
+        //     $response = $this->service->index($request);
+        //     return $this->successResp('Berhasil mendapatkan data!', new UserCollection($response));
+        // } catch (ValidationException $th) {
+        //     return $this->errorResp($th->errors());
+        // }
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function store(CreatePostRequest $request)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        try {
+            $response = $this->service->store($request->validated());
+            return $this->successResp('Successfully added post!', new PostResource($response));
+        } catch (ValidationException $th) {
+            return $this->errorResp($th->errors());
+        }
     }
 
     /**
@@ -36,7 +47,12 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // try {
+        //     $response = $this->service->show($id);
+        //     return $this->successResp('Berhasil mendapatkan data!', new UserResource($response));
+        // } catch (ValidationException $th) {
+        //     return $this->errorResp($th->errors());
+        // }
     }
 
     /**
@@ -52,7 +68,12 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // try {
+        //     $response = $this->service->update($request->all(), $id);
+        //     return $this->successResp('Berhasil update user!', new UserResource($response));
+        // } catch (ValidationException $th) {
+        //     return $this->errorResp($th->errors());
+        // }
     }
 
     /**
@@ -60,6 +81,11 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // try {
+        //     $response = $this->service->destroy($id);
+        //     return $this->successResp('Berhasil menghapus user!', $response);
+        // } catch (ValidationException $th) {
+        //     return $this->errorResp($th->errors());
+        // }
     }
 }
