@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,10 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::middleware('auth:sanctum')->group(function(){
-    Route::get('/me', [AuthController::class, 'me']);
+    Route::get('/me', [UserController::class, 'me']);
+    Route::post('/profile', [UserController::class, 'updateProfile']);
+    Route::get('user/', [UserController::class, 'index']);
+    Route::get('/user/{id}', [UserController::class, 'show']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 

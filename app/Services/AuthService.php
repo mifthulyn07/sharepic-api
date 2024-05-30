@@ -35,11 +35,5 @@ class AuthService
     {
         return $request->user()->currentAccessToken()->delete();
     }
-
-    public function me()
-    {
-        $me = Auth::User();
-        return $me;
-    }
 }
 ?>
