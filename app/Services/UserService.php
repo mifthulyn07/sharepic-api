@@ -13,7 +13,8 @@ class UserService
         $query = User::query();
 
         if($search = $request->input('search')){
-            $query->where('name', 'like', $search.'%');
+            $query->where('name', 'like', $search.'%')
+            ->orWhere('email', 'like',$search.'%');
         }
 
         if($request->has('order') && $request->order && $request->has('sort') && $request->sort){

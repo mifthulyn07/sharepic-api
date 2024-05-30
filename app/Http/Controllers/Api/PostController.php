@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use App\Services\PostService;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Post\PostResource;
+use App\Http\Resources\Post\PostCollection;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\API\Post\CreatePostRequest;
 use App\Http\Requests\API\Post\UpdatePostRequest;
@@ -19,19 +21,16 @@ class PostController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        // try {
-        //     $response = $this->service->index($request);
-        //     return $this->successResp('Berhasil mendapatkan data!', new UserCollection($response));
-        // } catch (ValidationException $th) {
-        //     return $this->errorResp($th->errors());
-        // }
+        try {
+            $response = $this->service->index($request);
+            return $this->successResp('Successfully retrieved data!', new PostCollection($response));
+        } catch (ValidationException $th) {
+            return $this->errorResp($th->errors());
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function store(CreatePostRequest $request)
     {
         try {

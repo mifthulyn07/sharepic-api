@@ -24,7 +24,7 @@ class UserController extends Controller
     {
         try {
             $response = $this->service->index($request);
-            return $this->successResp('Berhasil mendapatkan data!', new UserCollection($response));
+            return $this->successResp('Successfully retrieved data!', new UserCollection($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
         }

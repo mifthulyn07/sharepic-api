@@ -35,6 +35,9 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/post', [PostController::class, 'store']);
     // edit post
     Route::post('/post/{id}', [PostController::class, 'update']);
+    // get all posts
+    Route::get('post/', [PostController::class, 'index']);
+
 
 });
 

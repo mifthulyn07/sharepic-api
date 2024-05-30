@@ -7,34 +7,38 @@ use App\Models\Image;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\Builder;
 
 class PostService
 {
     public function index($request)
     {
-        // $query = User::query();
+        $query = Post::query();
 
-        // if($search = $request->input('search')){
-        //     $query->whereDate('mulai_kerja', 'like', $search.'%')
-        //         ->orWhere('id', 'like', $search.'%')
-        //         ->orWhere('nama', 'like', $search.'%')
-        //         ->orWhere('email', 'like',$search.'%')
-        //         ->orWhere('jns_kelamin', 'like', $search.'%')
-        //         ->orWhere('no_telp', 'like', $search.'%')
-        //         ->orWhere('alamat', 'like', $search.'%');
-        // }
+        if($search = $request->input('search')){
+            $query->where('title', 'like', $search.'%');
+        }
 
-        // if($request->has('order') && $request->order && $request->has('sort') && $request->sort){
-        //     $query->orderBy($request->order, $request->sort);
-        // }
+        if($name_idUser = $request->input('name_idUser')){
+            $query->where('id', 'like', $name_idUser.'%')
+            ->orWhere(function($query) use ($name_idUser){
+                $query->whereHas('user', function (Builder $query) use ($name_idUser) {
+                    $query->where('name', 'like', $name_idUser.'%');
+                });
+            });
+        }
 
-        // if ($request->has('limit')) {
-        //         $list = $query->paginate( $request['limit'] );
-        //     } else {
-        //         $list = $query->paginate(10);
-        // }
+        if($request->has('order') && $request->order && $request->has('sort') && $request->sort){
+            $query->orderBy($request->order, $request->sort);
+        }
 
-        // return $list;
+        if ($request->has('limit')) {
+                $list = $query->paginate( $request['limit'] );
+            } else {
+                $list = $query->paginate(10);
+        }
+
+        return $list;
     }
 
     public function show($id){
