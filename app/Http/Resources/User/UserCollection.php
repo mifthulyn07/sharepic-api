@@ -4,6 +4,7 @@ namespace App\Http\Resources\User;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\User\UserResource;
+use App\Http\Resources\Follower\FollowerResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class UserCollection extends ResourceCollection

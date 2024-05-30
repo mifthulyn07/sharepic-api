@@ -4,6 +4,8 @@ namespace App\Http\Resources\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Follower\FollowersResource;
+use App\Http\Resources\Follower\FollowingResource;
 
 class UserResource extends JsonResource
 {
@@ -18,6 +20,8 @@ class UserResource extends JsonResource
             'birth' => $this->birth,
             'profile_picture' => $this->profile_picture,
             'bio' => $this->bio,
+            'followers' => FollowersResource::collection($this->followers),
+            'following' => FollowingResource::collection($this->following),
         ];
     }
 }
