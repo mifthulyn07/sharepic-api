@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\FollowerController;
@@ -41,6 +42,11 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/post/{id}', [PostController::class, 'show']);
     // delete post 
     Route::delete('/post/{id}', [PostController::class, 'destroy']);
+
+    // like post
+    Route::post('/like', [LikeController::class, 'like']);
+    // unlike post
+    Route::delete('/unlike/{user_id}', [LikeController::class, 'unlike']);
 
 
 });
