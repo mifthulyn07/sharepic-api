@@ -1,39 +1,30 @@
 <?php 
 namespace App\Services;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
+use App\Repositories\AuthRepository;
 
 class AuthService
 {
-    public function login($request)
+    protected $authRepository;
+
+    public function __construct(AuthRepository $authRepository)
     {
-        $user = '';
-        $getEmail = User::where('email', $request['email'])->first();
-        if ( !$getEmail ) throw ValidationException::withMessages([
-            'email' => ['Email is not registered!'],
-        ]); 
-        $user = $getEmail;           
-        if ( !auth()->attempt( [ 'email' => $user->email, 'password' => $request['password'] ] ) ) {
-            throw ValidationException::withMessages([
-                'password' => ['Please ensure that you enter the email and password correctly!'],
-            ]); 
-        }
-        $user->token = $user->createToken('auth_token')->plainTextToken;
-        return $user;
+        $this->authRepository = $authRepository;
+    }
+
+    public function login($request)
+    {    
+        return $this->authRepository->login($request); 
     }
 
     public function register($request)
     {
-        $user = User::create($request);
-        $user->token =  $user->createToken('auth_token')->plainTextToken;
-        return $user;
+        return $this->authRepository->register($request); 
     }   
 
     public function logout($request)
     {
-        return $request->user()->currentAccessToken()->delete();
+        return $this->authRepository->logout($request); 
     }
 }
 ?>

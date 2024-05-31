@@ -1,53 +1,30 @@
 <?php 
 namespace App\Services;
 
-use App\Models\User;
-use App\Models\Comment;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationException;
+use App\Repositories\CommentRepository;
 
 class CommentService
 {
+    protected $commentRepository;
+
+    public function __construct(CommentRepository $commentRepository)
+    {
+        $this->commentRepository = $commentRepository;
+    }
+
     public function index($request)
     {
-        $query = User::query();
-
-        if($search = $request->input('search')){
-            $query->where('name', 'like', $search.'%')
-            ->orWhere('email', 'like',$search.'%');
-        }
-
-        if($request->has('order') && $request->order && $request->has('sort') && $request->sort){
-            $query->orderBy($request->order, $request->sort);
-        }
-
-        if ($request->has('limit')) {
-                $list = $query->paginate( $request['limit'] );
-            } else {
-                $list = $query->paginate(10);
-        }
-
-        return $list;
+        return $this->commentRepository->index($request);
     }
 
     public function store($request)
     {
-        $me = User::findOrFail(Auth::User()->id); 
-        $request['user_id'] = $me->id;
-
-        $store = Comment::create($request);
-        return $store;
+        return $this->commentRepository->store($request);
     }   
 
     public function destroy($id)
     {
-        $destroy = Comment::where('id', $id)->first();
-        if ( !$destroy ) throw ValidationException::withMessages([
-            'data' => ['Data not found!'],
-        ]); 
-        $destroy->destroy($id);
-        return $destroy;
+        return $this->commentRepository->destroy($id);
     }  
 }
 ?>
