@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\FollowerController;
 
 
@@ -48,11 +49,8 @@ Route::middleware('auth:sanctum')->group(function(){
     // unlike post
     Route::delete('/unlike/{user_id}', [LikeController::class, 'unlike']);
 
-
+    // add comment (only text)
+    Route::post('/comment', [CommentController::class, 'store']);
+    // delete comment
+    Route::delete('/comment/{id}', [CommentController::class, 'destroy']);
 });
-
-
-// Route::controller(RegisterController::class)->group(function(){
-//     Route::post('register', 'register');
-//     Route::post('login', 'login');
-// });

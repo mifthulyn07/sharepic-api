@@ -3,6 +3,7 @@
 namespace App\Http\Resources\User;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\Like\LikeResource;
 use App\Http\Resources\Post\PostResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Follower\FollowersResource;
@@ -24,6 +25,7 @@ class UserResource extends JsonResource
             'followers' => FollowersResource::collection($this->followers),
             'following' => FollowingResource::collection($this->following),
             'posts' => PostResource::collection($this->posts),
+            'liked' => LikeResource::collection($this->likes),
         ];
     }
 }
