@@ -16,8 +16,8 @@ class FollowingResource extends JsonResource
     {
         return [
             'id' => $this->id,  
-            'user_id' => $this->user_id,
-            'following' => $this->following,
+            'user_id' => $this->follower_id,
+            'following' => $this->user,
         ];
     }
 }

@@ -28,6 +28,10 @@ Route::middleware('auth:sanctum')->group(function(){
     // logout 
     Route::post('/logout', [AuthController::class, 'logout']);
 
+    // get followers
+    Route::get('/followers', [FollowerController::class, 'followers']);
+    // get following
+    Route::get('/following', [FollowerController::class, 'following']);
     // follow user
     Route::post('/follow', [FollowerController::class, 'follow']);
     // unfollow user
@@ -48,6 +52,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/like', [LikeController::class, 'like']);
     // unlike post
     Route::delete('/unlike/{user_id}', [LikeController::class, 'unlike']);
+    // get my liked post
+    Route::get('likes/', [LikeController::class, 'likes']);
 
     // add comment (only text)
     Route::post('/comment', [CommentController::class, 'store']);

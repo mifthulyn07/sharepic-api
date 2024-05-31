@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\API\Follower;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FollowRequest extends FormRequest
@@ -19,10 +20,17 @@ class FollowRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
+    // follower_id & user_id notsame follower_id
     public function rules(): array
     {
         return [
-            'user_id' => 'exists:users,id|different:follower_id|unique:followers,user_id',
+            'user_id' => [
+                'exists:users,id',
+                'different:follower_id',
+                Rule::unique('followers')->where(function ($query) {
+                    return $query->where('follower_id', auth()->user()->id);
+                })
+            ]
         ];
     }
 }

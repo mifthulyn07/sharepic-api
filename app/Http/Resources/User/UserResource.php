@@ -22,10 +22,10 @@ class UserResource extends JsonResource
             'birth' => $this->birth,
             'profile_picture' => $this->profile_picture,
             'bio' => $this->bio,
-            'followers' => FollowersResource::collection($this->followers),
-            'following' => FollowingResource::collection($this->following),
-            'posts' => PostResource::collection($this->posts),
-            'liked' => LikeResource::collection($this->likes),
+            // 'followers' => FollowersResource::collection($this->followers),
+            // 'following' => FollowingResource::collection($this->following),
+            // 'posts' => PostResource::collection($this->posts),
+            // 'liked' => LikeResource::collection($this->likes),
         ];
     }
 }

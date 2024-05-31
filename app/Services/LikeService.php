@@ -30,5 +30,27 @@ class LikeService
         $like->delete();
         return $like;
     }      
+
+    public function likes($request)
+    {
+        $query = Like::query()->where('user_id', auth()->user()->id);
+
+        if($search = $request->input('search')){
+            $query->where('name', 'like', $search.'%')
+            ->orWhere('email', 'like',$search.'%');
+        }
+
+        if($request->has('order') && $request->order && $request->has('sort') && $request->sort){
+            $query->orderBy($request->order, $request->sort);
+        }
+
+        if ($request->has('limit')) {
+                $list = $query->paginate( $request['limit'] );
+            } else {
+                $list = $query->paginate(10);
+        }
+
+        return $list;
+    }
 }
 ?>

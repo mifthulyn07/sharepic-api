@@ -19,15 +19,6 @@ class PostService
             $query->where('title', 'like', $search.'%');
         }
 
-        if($name_idUser = $request->input('name_idUser')){
-            $query->where('id', 'like', $name_idUser.'%')
-            ->orWhere(function($query) use ($name_idUser){
-                $query->whereHas('user', function (Builder $query) use ($name_idUser) {
-                    $query->where('name', 'like', $name_idUser.'%');
-                });
-            });
-        }
-
         if($request->has('order') && $request->order && $request->has('sort') && $request->sort){
             $query->orderBy($request->order, $request->sort);
         }

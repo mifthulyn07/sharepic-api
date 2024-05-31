@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\API\Like;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LikeRequest extends FormRequest
@@ -22,7 +23,12 @@ class LikeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'post_id' => 'exists:posts,id|unique:likes,post_id',
+            'post_id' => [
+                'exists:posts,id',
+                Rule::unique('likes')->where(function ($query) {
+                    return $query->where('user_id', auth()->user()->id);
+                })
+            ]
         ];
     }
 }
