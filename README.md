@@ -4,5 +4,5 @@ This social media platform allows users to share and showcase photos. Users can 
 # Contact # 
 You can reach me at mifthulyn07@gmail.com, if you have any questions or just want to connect.
 
-#ERD#
+# ERD #
 ![sharePic-miftahul drawio](https://github.com/mifthulyn07/sharepic-api/assets/84966642/d34bdd25-73c1-49bf-9441-4dbd2b3e5c24)
