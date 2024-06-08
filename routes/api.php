@@ -51,7 +51,7 @@ Route::middleware('auth:sanctum')->group(function(){
     // like post
     Route::post('/like', [LikeController::class, 'like']);
     // unlike post
-    Route::delete('/unlike/{user_id}', [LikeController::class, 'unlike']);
+    Route::delete('/unlike/{post_id}', [LikeController::class, 'unlike']);
     // get my liked post
     Route::get('likes/', [LikeController::class, 'likes']);
 
